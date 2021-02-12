@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import json
+import csv
 
 app = Flask(__name__)
 
@@ -42,6 +43,26 @@ def page():
 
     '''
     return render_template("public/listing.html", data=json.loads(listing_info))
+
+@app.route('/search')
+def search():
+    with open('./data/results.csv') as csv_file:
+        data = csv.reader(csv_file, delimiter=',')
+        first_line = True
+        places = []
+        for row in data:
+            if not first_line:
+                places.append({
+                    "Price": row[12],
+                    "Address": row[7],
+                    "Bathrooms": row[2],
+                    "Bedrooms": row[3],
+                    "InteriorSize": row[4],
+                    "LowResPhoto": row[23]
+                })
+            else:
+                first_line = False
+    return render_template("public/results.html", data=places)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

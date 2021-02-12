@@ -5,15 +5,16 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
         <title>homesimple ui</title>
-        <link href="style.css" rel="stylesheet" type="text/css" />
-        
-       
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+
+
+
       </head>
       <body>
         <script>
           // Initialize and add the map
           function initMap() {
-    
+
             // const uluru = { lat: 43.4680, lng: -80.5373 };
             const pin = { lat: {{data.Latitude}}, lng: {{data.Longitude}} };
             // The map, centered at Uluru
@@ -21,7 +22,7 @@
               zoom: 18,
               center: pin,
             });
-    
+
             const marker = new google.maps.Marker({
               position: pin,
               map: map,
@@ -30,19 +31,19 @@
         </script>
         <!-- <script src="script.js"></script> -->
         <!-- tude,PostalCode,NeighbourHood,Price,PropertyType,ParkingSpace,OwnershipType,Appliances,FlooringType,BasementType,HeatingType,LandSize,AmmenitiesNearBy,PropertyTax,ZoningDescription,LowResPhoto -->
-        
-        
+
+
         <h2>Images</h2>
             <img src={{data.LowResPhoto}}>
         <h1>{{data.title}}</h1>
-        
+
         <div id="map"></div>
        <script
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvJHFRT-BDk9-cio13n0IE4NJK85TSZPw&callback=initMap&libraries=&v=weekly"
           async
         ></script>
-    
-    
+
+
         <iframe
       width="600"
       height="450"
@@ -51,10 +52,10 @@
         &q={{ data.Address}}" allowfullscreen>
     </iframe>
         <h2>Features</h2>
-        <p>Address: {{data.Address}}, {{data.PostalCode}}</p>
-        <p>Price: ${{data.Price}}</p>
+        <p>Address: {{data.Address}}</p>
+        <p>Price: {{data.Price}}</p>
         <p>MLS Number: {{data.MlsNumber}}</p>
-    
+
         <p>Bathrooms: {{data.Bathrooms}}</p>
         <p>Bedrooms: {{data.Bedrooms}}</p>
         <p>InteriorSize: {{data.InteriorSize}}</p>
@@ -65,4 +66,3 @@
         <p>{{data.PublicRemarks}}</p>
           </body>
     </html>
-    
