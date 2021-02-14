@@ -75,6 +75,10 @@ def addLike(mls_number):
     print(likesMap)
     return "success"
 
+@app.route('/admin')
+def admin():
+    return likesMap
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
