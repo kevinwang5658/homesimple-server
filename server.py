@@ -1,9 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, Response
 import json
 import csv
 
 app = Flask(__name__)
 
+likesMap = {}
 
 @app.route('/')
 def get_root_dir():
@@ -63,6 +64,17 @@ def search():
             else:
                 first_line = False
     return render_template("public/results.html", data=places)
+
+@app.route('/like/<mls_number>')
+def addLike(mls_number):
+    ip_addr = request.remote_addr
+    if ip_addr not in likesMap:
+        likesMap[ip_addr] = []
+
+    likesMap[request.remote_addr].append(mls_number)
+    print(likesMap)
+    return Response("{'a':'b'}", status=201, mimetype='application/json')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
