@@ -6,24 +6,26 @@
 </head>
 <body>
     {{ data }}
-    <form action="/recommendation">
+    <form action="/recommendation" method="post">
       <label for="ip_addr">IP Address:</label>
       <input type="text" id="ip_addr" name="ip_addr"><br><br>
-      <input type="submit" value="Request Recommendations">
+      <input id="submit_recommendation" type="button" value="Request Recommendations">
     </form>
     <p id="results"></p>
 </body>
-{#<script>#}
-{#    document.getElementById("request").addEventListener("click", function() {#}
-{#        var xhttp = new XMLHttpRequest();#}
-{#        xhttp.onreadystatechange = function() {#}
-{#            if (this.readyState == 4 && this.status == 200) {#}
-{#                // Typical action to be performed when the document is ready:#}
-{#                document.getElementById("results").innerHTML = xhttp.responseText;#}
-{#            }#}
-{#        };#}
-{#        xhttp.open("GET", "recommendation/", true);#}
-{#        xhttp.send();#}
-{#    });#}
-{#</script>#}
+<script>
+    document.getElementById("submit_recommendation").addEventListener("click", function() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Typical action to be performed when the document is ready:
+                document.getElementById("results").innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("POST", "/recommendation", true);
+        xhttp.setRequestHeader('Content-type', 'application/json');
+        let params = JSON.stringify({ ipAddress: document.getElementById("ip_addr").value })
+        xhttp.send(params);
+    });
+</script>
 </html>

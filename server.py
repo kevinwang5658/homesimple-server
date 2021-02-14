@@ -106,7 +106,12 @@ def admin():
 
 @app.route('/recommendation', methods= ['POST'])
 def recommendation():
-    return "true" + request.args
+    listOfLikes = likesMap[request.json['ipAddress']]
+
+    # Put recommendation code here
+    # Use listOfLikes to get what the user liked
+
+    return "Reommendation: " + str(listOfLikes)
 
 
 if __name__ == '__main__':
