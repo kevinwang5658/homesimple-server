@@ -65,7 +65,7 @@ def search():
                 first_line = False
     return render_template("public/results.html", data=places)
 
-@app.route('/like/<mls_number>')
+@app.route('/like/<mls_number>', methods = ['POST'])
 def addLike(mls_number):
     ip_addr = request.remote_addr
     if ip_addr not in likesMap:
@@ -73,7 +73,7 @@ def addLike(mls_number):
 
     likesMap[request.remote_addr].append(mls_number)
     print(likesMap)
-    return Response("{'a':'b'}", status=201, mimetype='application/json')
+    return "success"
 
 
 if __name__ == '__main__':
