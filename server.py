@@ -9,10 +9,9 @@ likesMap = {}
 @app.route('/')
 def get_root_dir():
     return 'hello world'
-
 @app.route('/page')
 def page():
-    
+
     listing_info='''
     {
   "MlsNumber": "X5095381",
@@ -44,16 +43,42 @@ def page():
 
     '''
     return render_template("public/listing.html", data=json.loads(listing_info))
+@app.route('/page/<MlsNumber>')
+def page_id(MlsNumber):
+    places={}
+    with open('./data/results.csv') as csv_file:
+        data = csv.reader(csv_file, delimiter=',')
+
+        for row in data:
+            if row[0]== MlsNumber:
+                places={
+                    "MlsNumber": row[0],
+                    "PublicRemarks": row[1],
+                    "Bathrooms": row[2],
+                    "Bedrooms": row[3],
+                    "InteriorSize": row[4],
+                    "Ammenities": row[6],
+
+                    "Address": row[7],
+                    "Longitude": row[8],
+                    "Latitude": row[9],
+                    "Price": row[12],
+
+                    "LowResPhoto": row[23]
+                }
+    return render_template("public/listing.html", data=places)
 
 @app.route('/search')
 def search():
+    places = []
     with open('./data/results.csv') as csv_file:
         data = csv.reader(csv_file, delimiter=',')
         first_line = True
-        places = []
+
         for row in data:
             if not first_line:
                 places.append({
+                    "MlsNumber": row[0],
                     "Price": row[12],
                     "Address": row[7],
                     "Bathrooms": row[2],
