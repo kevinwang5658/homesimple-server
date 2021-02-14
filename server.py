@@ -77,7 +77,11 @@ def addLike(mls_number):
 
 @app.route('/admin')
 def admin():
-    return likesMap
+    return render_template("public/admin.html", data=str(likesMap))
+
+@app.route('/recommendation', methods= ['POST'])
+def recommendation():
+    return "true" + request.args
 
 
 if __name__ == '__main__':
