@@ -90,6 +90,10 @@ def search():
                 first_line = False
     return render_template("public/results.html", data=places)
 
+@app.route('/like', methods=['GET'])
+def likes():
+    return json.dumps(likesMap)
+
 @app.route('/like/<mls_number>', methods = ['POST'])
 def addLike(mls_number):
     ip_addr = request.remote_addr
