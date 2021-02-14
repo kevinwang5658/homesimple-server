@@ -15,6 +15,7 @@
         <ul>
         {% for listing in data %}
           <li>
+          <a href="page/{{ listing['MlsNumber'] }}">
             <div class="listing">
               <img src={{listing['LowResPhoto']}}>
               <p>Price: {{listing['Price']}}</p>
@@ -27,6 +28,7 @@
               <p>Viewed</p>
               <p>Liked</p>
             </div>
+              </a>
           </li>
 
         {% endfor %}
