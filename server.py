@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, Response
 import json
 import csv
+import /tf_idf.py
 
 app = Flask(__name__)
 
@@ -116,12 +117,14 @@ def admin():
 def recommendation():
     listOfLikes = likesMap[request.json['ipAddress']]
 
+
+
     # Put recommendation code here
     # Use listOfLikes to get what the user liked
 
-    return "Reommendation: " + str(listOfLikes)
+    return "Recommendation: " + str(listOfLikes)
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run()
 
