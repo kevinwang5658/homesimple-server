@@ -6,12 +6,8 @@
         <meta name="viewport" content="width=device-width">
         <title>homesimple ui</title>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
-
-
-
-      </head>
-      <body>
-        <script>
+        <script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+          <script>
           // Initialize and add the map
           function initMap() {
 
@@ -29,12 +25,51 @@
             });
           }
         </script>
+          <script>
+              function check_like(mls){
+                  $.get( "/like", function( data ) {
+                      console.log("check",data)
+                      if(data.includes(mls)){
+                          $('#like_button').html("Unlike");
+                      }else{
+                          $('#like_button').html("Like");
+                      }
+                });
+              }
+          </script>
+        <script>
+            function update_like() {
+                console.log("update")
+            //This performs a POST-Request.
+            //Use "$.get();" in order to perform a GET-Request (you have to take a look in the rest-API-documentation, if you're unsure what you need)
+            //The Browser downloads the webpage from the given url, and returns the data.
+            $.post( "/like/{{ data.MlsNumber }}", function( ) {
+                check_like({{ data.MlsNumber }})
+                 //As soon as the browser finished downloading, this function is called.
+            });
+        }
+        </script>
+
+
+      </head>
+      <body>
+        <script>
+    window.onload = function() {
+        check_like({{ data.MlsNumber }})
+    };
+  </script>
         <!-- <script src="script.js"></script> -->
         <!-- tude,PostalCode,NeighbourHood,Price,PropertyType,ParkingSpace,OwnershipType,Appliances,FlooringType,BasementType,HeatingType,LandSize,AmmenitiesNearBy,PropertyTax,ZoningDescription,LowResPhoto -->
+        <a href="/search">
+            <button>Back</button>
+        </a>
 
+        <button id="like_button" onclick="update_like()">Like</button>
 
-        <h2>Images</h2>
-            <img src={{data.LowResPhoto}}>
+        <script>
+
+        </script>
+        <img src={{data.LowResPhoto}}>
         <h1>{{data.title}}</h1>
 
         <div id="map"></div>
