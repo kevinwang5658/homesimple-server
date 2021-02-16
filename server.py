@@ -100,7 +100,11 @@ def addLike(mls_number):
     if ip_addr not in likesMap:
         likesMap[ip_addr] = []
 
-    likesMap[request.remote_addr].append(mls_number)
+    # For now let's make this endpoint like a toggle button
+    if (mls_number not in likesMap[request.remote_addr]):
+        likesMap[request.remote_addr].append(mls_number)
+    else:
+        likesMap[request.remote_addr].remove(mls_number)
     print(likesMap)
     return "success"
 
