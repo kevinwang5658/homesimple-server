@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, Response
 import json
 import csv
-import /tf_idf.py
+import sys
+sys.path.append('TF-IDF')
+import tf_idf
 
 app = Flask(__name__)
 
