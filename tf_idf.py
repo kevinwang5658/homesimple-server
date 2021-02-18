@@ -63,5 +63,5 @@ def recommend(item_id, num):
     recs = results[item_id][:num]
     for rec in recs:
         print('\nRecommended: ' + item(rec[1]) + '\n(score:' + str(rec[0]) + ')')
-
+#    return(item_id'',num=)
 
