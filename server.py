@@ -121,13 +121,13 @@ def admin():
 def recommendation():
     listOfLikes = likesMap[request.json['ipAddress']]
     print(listOfLikes)
-    text_rec = tf_idf.recommend("40067374", 5)
+    text_rec = tf_idf.recommend(listOfLikes, 5)
     print(text_rec)
 
     # Put recommendation code here
     # Use listOfLikes to get what the user liked
 
-    return "Recommendation: " + str(listOfLikes)
+    return text_rec
 
 
 if __name__ == '__main__':
