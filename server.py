@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, Response
 import json
 import csv
+
+
+import sys
+sys.path.append('recommendations')
 import tf_idf
 
 app = Flask(__name__)
@@ -116,8 +120,9 @@ def admin():
 @app.route('/recommendation', methods= ['POST'])
 def recommendation():
     listOfLikes = likesMap[request.json['ipAddress']]
-
-    tf_idf.similar_items
+    print(listOfLikes)
+    text_rec = tf_idf.recommend("40067374", 5)
+    print(text_rec)
 
     # Put recommendation code here
     # Use listOfLikes to get what the user liked
