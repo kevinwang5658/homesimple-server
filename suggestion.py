@@ -1,7 +1,6 @@
 import numpy as np
 from PIL import Image
 from feature_extractor import FeatureExtractor
-from datetime import datetime
 from flask import Flask, request, render_template
 from pathlib import Path
 import os
@@ -15,6 +14,7 @@ print(listOfLikes)
 
 for number in listOfLikes:
     print(number)
+
 '''
 
 
@@ -29,11 +29,11 @@ def image_search(listOfLikes):
         features.append(np.load(feature_path))
         img_paths.append(
             Path("./Users/PHOEN/PycharmProjects/homesimple-server/static/data/images") / (feature_path.stem + ".jpg"))
-        relative_img_paths.append('/static/data/images/' + (feature_path.stem + ".jpg"))
+        relative_img_paths.append('./static/data/images/' + (feature_path.stem + ".jpg"))
 
     features = np.array(features)
     print(features)
-    print(img_paths)
+    print(relative_img_paths)
 
     print("hello world")
     scriptDir = os.path.dirname(__file__)
@@ -54,13 +54,16 @@ def image_search(listOfLikes):
         ids = np.argsort(dists)[:10]  # Top 30 results
         scores = [(dists[id], img_paths[id], relative_img_paths[id]) for id in ids]
         print(scores)
-
-        return render_template('public/admin.html',
+        return img_path, scores
+    '''
+    return render_template('public/admin.html',
                                render_images=True,
                                query_path=img_path,
                                scores=scores,
                                render=False)
-    else:
+        else:
         return render_template('public/admin.html')
+    '''
 
-# image_search(listOfLikes)
+
+#image_search(listOfLikes)

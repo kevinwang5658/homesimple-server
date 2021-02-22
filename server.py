@@ -1,21 +1,32 @@
 from flask import Flask, render_template, request, Response
 import json
 import csv
+
+
 import sys
-sys.path.append('TF-IDF')
+<<<<<<< Updated upstream
+sys.path.append('recommendations')
 import tf_idf
+=======
+from flask import Flask, request, render_template
+from suggestion import image_search
+>>>>>>> Stashed changes
 
-app = Flask(__name__)
+sys.path.append('TF-IDF')
+# import tf_idf
 
+app = Flask(__name__, static_url_path='/static')
 likesMap = {}
+
 
 @app.route('/')
 def get_root_dir():
     return 'hello world'
+
+
 @app.route('/page')
 def page():
-
-    listing_info='''
+    listing_info = '''
     {
   "MlsNumber": "X5095381",
   "PublicRemarks": "Location Location Location !!! Bright Well Maintained One Of Detached Home Back To Trail !!! Newly Wood Floor Throughout, Lots Of Windows, New Paint, Quiet Neighbourhood, Mins To Local Restaurants, Mall, Supermarkets, Schools &Shops. Walk Distense To University Of Waterloo, Used To Be Licensed Student Rental.And Own Use. Buy To Invest Or Own Use. Recent Improvements!!! Can't Miss This.**** EXTRAS **** Stove, Dishwasher, Washer, Dryer, All Elf's, All Window Coverings And Cac. (27853962)",
@@ -46,15 +57,17 @@ def page():
 
     '''
     return render_template("public/listing.html", data=json.loads(listing_info))
+
+
 @app.route('/page/<MlsNumber>')
 def page_id(MlsNumber):
-    places={}
+    places = {}
     with open('./data/results.csv') as csv_file:
         data = csv.reader(csv_file, delimiter=',')
 
         for row in data:
-            if row[0]== MlsNumber:
-                places={
+            if row[0] == MlsNumber:
+                places = {
                     "MlsNumber": row[0],
                     "PublicRemarks": row[1],
                     "Bathrooms": row[2],
@@ -70,6 +83,7 @@ def page_id(MlsNumber):
                     "LowResPhoto": row[23]
                 }
     return render_template("public/listing.html", data=places)
+
 
 @app.route('/search')
 def search():
@@ -93,11 +107,13 @@ def search():
                 first_line = False
     return render_template("public/results.html", data=places)
 
+
 @app.route('/like', methods=['GET'])
 def likes():
     return json.dumps(likesMap)
 
-@app.route('/like/<mls_number>', methods = ['POST'])
+
+@app.route('/like/<mls_number>', methods=['POST'])
 def addLike(mls_number):
     ip_addr = request.remote_addr
     if ip_addr not in likesMap:
@@ -111,22 +127,37 @@ def addLike(mls_number):
     print(likesMap)
     return "success"
 
+
 @app.route('/admin')
 def admin():
-    return render_template("public/admin.html", data=str(likesMap))
+    return render_template("public/admin.html", data=str(likesMap), render=True)
 
-@app.route('/recommendation', methods= ['POST'])
+
+@app.route('/recommendation', methods=['GET', 'POST'])
 def recommendation():
+    print(likesMap)
     listOfLikes = likesMap[request.json['ipAddress']]
-
-
+<<<<<<< Updated upstream
+    print(listOfLikes)
+    text_rec = tf_idf.recommend(listOfLikes, 5)
+    print(text_rec)
+=======
+>>>>>>> Stashed changes
 
     # Put recommendation code here
-    # Use listOfLikes to get what the user liked
+    # Use listOfLikes to get what the user likes
+    image_path, scores = image_search(listOfLikes)
 
-    return "Recommendation: " + str(listOfLikes)
+<<<<<<< Updated upstream
+    return text_rec
+=======
+    return render_template('public/admin.html',
+                           render_images=True,
+                           query_path=image_path,
+                           scores=scores,
+                           render=False)
+>>>>>>> Stashed changes
 
 
 if __name__ == '__main__':
     app.run()
-
