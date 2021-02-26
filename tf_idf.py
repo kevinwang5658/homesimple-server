@@ -65,7 +65,8 @@ def recommend(list_of_likes, num):
     result = {mls_numbers[i]: cosine_similarities[i] for i in range(len(mls_numbers))}
 
     # Return the top N values
-    return dict(sorted(result.items())[:num])
+    # return dict(sorted(result.items())[:num])
+    return dict(sorted(result.items()))
 
 
 

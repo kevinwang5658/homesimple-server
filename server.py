@@ -1,19 +1,15 @@
 from flask import Flask, render_template, request, Response
 import json
 import csv
-
+import os
 
 import sys
-<<<<<<< Updated upstream
-sys.path.append('recommendations')
-import tf_idf
-=======
+
 from flask import Flask, request, render_template
 from suggestion import image_search
->>>>>>> Stashed changes
 
-sys.path.append('TF-IDF')
-# import tf_idf
+# sys.path.append('TF-IDF')
+import tf_idf
 
 app = Flask(__name__, static_url_path='/static')
 likesMap = {}
@@ -135,28 +131,25 @@ def admin():
 
 @app.route('/recommendation', methods=['GET', 'POST'])
 def recommendation():
-    print(likesMap)
+    # print(likesMap)
     listOfLikes = likesMap[request.json['ipAddress']]
-<<<<<<< Updated upstream
-    print(listOfLikes)
+    # print(listOfLikes)
+    #get list of all tfidf scores
     text_rec = tf_idf.recommend(listOfLikes, 5)
-    print(text_rec)
-=======
->>>>>>> Stashed changes
+    print('tf-idf scores:', text_rec)
 
     # Put recommendation code here
     # Use listOfLikes to get what the user likes
     image_path, scores = image_search(listOfLikes)
+    #pair mls number with scores
+    results=scores[0],[os.path.basename(score) for score in scores[1]]
+    print('image-rec scores:', results)
 
-<<<<<<< Updated upstream
-    return text_rec
-=======
     return render_template('public/admin.html',
                            render_images=True,
                            query_path=image_path,
                            scores=scores,
                            render=False)
->>>>>>> Stashed changes
 
 
 if __name__ == '__main__':

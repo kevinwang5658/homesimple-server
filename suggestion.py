@@ -24,11 +24,12 @@ def image_search(listOfLikes):
     features = []
     img_paths = []
     relative_img_paths = []
-    for feature_path in Path("/Users/PHOEN/PycharmProjects/homesimple-server/static/data/feature").glob("*.npy"):
+    #/Users/PHOEN/PycharmProjects/homesimple-server/static/data/feature
+    for feature_path in Path("./static/data/feature").glob("*.npy"):
         print(feature_path)
         features.append(np.load(feature_path))
         img_paths.append(
-            Path("./Users/PHOEN/PycharmProjects/homesimple-server/static/data/images") / (feature_path.stem + ".jpg"))
+            Path("./static/data/images") / (feature_path.stem + ".jpg"))
         relative_img_paths.append('./static/data/images/' + (feature_path.stem + ".jpg"))
 
     features = np.array(features)
@@ -51,7 +52,7 @@ def image_search(listOfLikes):
 
         query = fe.extract(img=Image.open(img_path))
         dists = np.linalg.norm(features - query, axis=1)  # L2 distances to features
-        ids = np.argsort(dists)[:10]  # Top 30 results
+        ids = np.argsort(dists)#[:10]  # Top 30 results
         scores = [(dists[id], img_paths[id], relative_img_paths[id]) for id in ids]
         print(scores)
         return img_path, scores
