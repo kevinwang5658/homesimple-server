@@ -141,6 +141,7 @@ def recommendation():
     # Put recommendation code here
     # Use listOfLikes to get what the user likes
     image_path, scores = image_search(listOfLikes)
+
     #pair mls number with scores
     results=scores[0],[os.path.basename(score) for score in scores[1]]
     print('image-rec scores:', results)
