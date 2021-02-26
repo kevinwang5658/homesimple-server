@@ -140,20 +140,37 @@ def recommendation():
 
     # Put recommendation code here
     # Use listOfLikes to get what the user likes
-    scores = image_search(listOfLikes)
+    img_rec = image_search(listOfLikes)
+    #combine both dicts by mlsnumber
+    combined = {k: text_rec.get(k, 0) + 0.75 * img_rec.get(k, 0) for k in set(text_rec) | set(img_rec)}
+    #sort ascending
+    sorted_rec = [[k, combined[k]] for k in sorted(combined, key=combined.get, reverse=False)]
+    print(sorted_rec)
+    # return render_template('public/admin.html',
+    #                        render_images=True,
+    #                        query_path=image_path,
+    #                        scores=scores,
+    #                        render=False)
+    rec_listings=[]
+    #only show first 10 items
+    for recommendation in sorted_rec[:10]:
+        with open('./data/results.csv') as csv_file:
+            data = csv.reader(csv_file, delimiter=',')
 
-    print(scores)
+            for row in data:
+                if row[0] == recommendation[0]:
+                    rec_listings.append({
+                        "MlsNumber": row[0],
+                        "Price": row[12],
+                        "Address": row[7],
+                        "Bathrooms": row[2],
+                        "Bedrooms": row[3],
+                        "InteriorSize": row[4],
+                        "LowResPhoto": row[23],
+                        "Score": recommendation[1]
+                    })
 
-    #pair mls number with scores
-    # results=scores[0],[os.path.basename(score) for score in scores[1]]
-    print('image-rec scores:', results)
-
-    return render_template('public/admin.html',
-                           render_images=True,
-                           query_path=image_path,
-                           scores=scores,
-                           render=False)
-
+    return render_template("public/results.html", data=rec_listings)
 
 if __name__ == '__main__':
     app.run()

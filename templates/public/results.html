@@ -18,6 +18,7 @@
           <a href="page/{{ listing['MlsNumber'] }}">
             <div class="listing">
               <img src={{listing['LowResPhoto']}}>
+                <p>{{ listing['Score'] if listing['Score'] != ''}}</p>
               <p>Price: {{listing['Price']}}</p>
               <p>Address: {{listing['Address']}} </p>
               <ul>
