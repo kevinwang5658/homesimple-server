@@ -140,10 +140,12 @@ def recommendation():
 
     # Put recommendation code here
     # Use listOfLikes to get what the user likes
-    image_path, scores = image_search(listOfLikes)
+    scores = image_search(listOfLikes)
+
+    print(scores)
 
     #pair mls number with scores
-    results=scores[0],[os.path.basename(score) for score in scores[1]]
+    # results=scores[0],[os.path.basename(score) for score in scores[1]]
     print('image-rec scores:', results)
 
     return render_template('public/admin.html',
