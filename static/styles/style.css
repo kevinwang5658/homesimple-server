@@ -4,4 +4,15 @@ div.listing{
     margin: 10px; !important;
     width:100%;
 }
+img{
+    height:300px;
+    width:auto;
+}
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
 

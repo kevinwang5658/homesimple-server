@@ -76,7 +76,7 @@ def page_id(MlsNumber):
                     "Latitude": row[9],
                     "Price": row[12],
 
-                    "LowResPhoto": row[23]
+                    "LowResPhoto": row[24]
                 }
     return render_template("public/listing.html", data=places)
 
@@ -97,7 +97,7 @@ def search():
                     "Bathrooms": row[2],
                     "Bedrooms": row[3],
                     "InteriorSize": row[4],
-                    "LowResPhoto": row[23]
+                    "LowResPhoto": row[24]
                 })
             else:
                 first_line = False

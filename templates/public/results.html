@@ -16,8 +16,9 @@
         {% for listing in data %}
           <li>
           <a href="page/{{ listing['MlsNumber'] }}">
-            <div class="listing">
-              <img src={{listing['LowResPhoto']}}>
+            <div class="listing row">
+                <div class="column">
+
                 <p>{{ listing['Score'] if listing['Score'] != ''}}</p>
               <p>Price: {{listing['Price']}}</p>
               <p>Address: {{listing['Address']}} </p>
@@ -28,6 +29,10 @@
 
               <p>Viewed</p>
               <p>Liked</p>
+                    </div>
+                <div class="column">
+                    <img src={{listing['LowResPhoto']}}>
+                </div>
             </div>
               </a>
           </li>
