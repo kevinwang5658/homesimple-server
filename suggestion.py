@@ -32,7 +32,7 @@ def image_search(listOfLikes):
         img_paths.append(
             Path("./static/data/images") / (feature_path.stem + ".jpg"))
         relative_img_paths.append('./static/data/images/' + (feature_path.stem + ".jpg"))
-        mlsNumbers.append(feature_path.stem)
+        mlsNumbers.append(feature_path.stem[:-(len('_1'))])
 
     features = np.array(features)
 
