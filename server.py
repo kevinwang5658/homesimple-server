@@ -13,6 +13,7 @@ import tf_idf
 
 app = Flask(__name__, static_url_path='/static')
 likesMap = {}
+ipToNameMap = {}
 
 
 @app.route('/')
@@ -171,6 +172,18 @@ def recommendation():
                     })
 
     return render_template("public/results.html", data=rec_listings)
+
+@app.route('/name', methods=['POST'])
+def setName():
+    ip_addr = request.remote_addr
+    ipToNameMap[ip_addr] = request.json['name']
+
+    return "success"
+
+@app.route('/name', methods=['GET'])
+def getName():
+    ip_addr = request.remote_addr
+    return ipToNameMap[ip_addr]
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=80)
