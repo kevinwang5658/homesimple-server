@@ -11,6 +11,8 @@ from suggestion import image_search
 # sys.path.append('TF-IDF')
 import tf_idf
 
+import requests
+
 app = Flask(__name__, static_url_path='/static')
 likesMap = {}
 ipToNameMap = {}
@@ -155,7 +157,7 @@ def recommendation():
     rec_listings=[]
     #only show first 10 items
     with open('./data/results.csv') as csv_file:
-        data = csv.reader(csv_file, delimiter=',')
+        data = list(csv.reader(csv_file, delimiter=','))
         for recommendation in sorted_rec[:10]:
             for row in data:
                 if row[0] == recommendation[0]:
@@ -217,26 +219,33 @@ def deleteResults(name):
 def login():
     return render_template("public/login.html")
 
-@app.route('/results')
-def results():
+@app.route('/results/<name>')
+def results(name):
     #get recommendation listings from 3 sources
-
+    response = requests.get('http://'+request.headers.get('Host')+'/result/'+name)
+    response = response.json()
+    print(response)
     #get recommendation values
     with open('./data/results.csv') as csv_file:
         data = list(csv.reader(csv_file, delimiter=','))
-        results={'rec_a': [], 'rec_b': [], 'rec_c': [], 'rec_d': [], 'rec_e': []}
-        sources=['rec_a','rec_b','rec_c','rec_d','rec_e']
+        results={'realtorA': [], 'realtorB': [], 'realtorC': [], 'realtorD': [], 'realtorE': []}
+        sources=['realtorA','realtorB','realtorC','realtorD','realtorE']
         for source in sources:
-            for listing in data[:10]:
-                results[source].append({
-                            "MlsNumber": listing[0],
-                            "Price": listing[12],
-                            "Address": listing[7],
-                            "Bathrooms": listing[2],
-                            "Bedrooms": listing[3],
-                            "InteriorSize": listing[4],
-                            "LowResPhoto": listing[24]
-                })
+            if source in response[name]:
+                for liked_mls in response[name][source]:
+                    for listing in data:
+                        if listing[0] == liked_mls:
+                            results[source].append({
+                                        "MlsNumber": listing[0],
+                                        "Price": listing[12],
+                                        "Address": listing[7],
+                                        "Bathrooms": listing[2],
+                                        "Bedrooms": listing[3],
+                                        "InteriorSize": listing[4],
+                                        "LowResPhoto": listing[24]
+                            })
+            else:
+                print(source,' recommendation not found!')
     return render_template("public/recommendations.html", data=results)
 
 
