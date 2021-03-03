@@ -192,7 +192,6 @@ def getName():
     ip_addr = request.remote_addr
     return ipToNameMap[ip_addr]
 
-<<<<<<< HEAD
 @app.route('/result/<name>', methods=['POST'])
 def setResults(name):
     resultsMap[name] = request.json['data']
