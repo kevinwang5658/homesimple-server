@@ -14,7 +14,7 @@ import tf_idf
 app = Flask(__name__, static_url_path='/static')
 likesMap = {}
 ipToNameMap = {}
-
+resultsMap = {}
 
 @app.route('/')
 def get_root_dir():
@@ -130,7 +130,7 @@ def admin():
     return render_template("public/admin.html", data=str(likesMap), render=True)
 
 
-@app.route('/recommendation', methods=['GET', 'POST'])
+@app.route('/recommendation', methods=['POST'])
 def recommendation():
     # print(likesMap)
     listOfLikes = likesMap[request.json['ipAddress']]
@@ -171,6 +171,13 @@ def recommendation():
                         "Score": recommendation[1]
                     })
 
+    if (request.json['ipAddress'] in ipToNameMap):
+        name = ipToNameMap[request.json['ipAddress']]
+        if (name not in resultsMap):
+            resultsMap[name] = {}
+
+        resultsMap[name]['realtorD'] = rec_listings
+
     return render_template("public/results.html", data=rec_listings)
 
 @app.route('/name', methods=['POST'])
@@ -184,6 +191,24 @@ def setName():
 def getName():
     ip_addr = request.remote_addr
     return ipToNameMap[ip_addr]
+
+@app.route('/result/<name>', methods=['POST'])
+def setResults(name):
+    resultsMap[name] = request.json['data']
+
+    return "success"
+
+@app.route('/result/<name>', methods=['GET'])
+def getResults(name):
+    return resultsMap
+
+@app.route('/result/<name>', methods=['DELETE'])
+def deleteResults(name):
+    del resultsMap[name]
+
+    return "success"
+
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=80)
