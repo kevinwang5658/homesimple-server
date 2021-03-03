@@ -176,7 +176,9 @@ def recommendation():
         if (name not in resultsMap):
             resultsMap[name] = {}
 
-        resultsMap[name]['realtorD'] = rec_listings
+        resultsMap[name]['realtorD'] = list(map(lambda x: x['MlsNumber'], rec_listings))
+
+        print()
 
     return render_template("public/results.html", data=rec_listings)
 
@@ -192,9 +194,12 @@ def getName():
     ip_addr = request.remote_addr
     return ipToNameMap[ip_addr]
 
-@app.route('/result/<name>', methods=['POST'])
-def setResults(name):
-    resultsMap[name] = request.json['data']
+@app.route('/result/<name>/<realtor>', methods=['POST'])
+def setResults(name, realtor):
+    if (name not in resultsMap):
+        resultsMap[name] = {}
+
+    resultsMap[name][realtor] = request.json['data']
 
     return "success"
 
