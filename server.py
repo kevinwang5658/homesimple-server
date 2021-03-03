@@ -154,10 +154,9 @@ def recommendation():
     #                        render=False)
     rec_listings=[]
     #only show first 10 items
-    for recommendation in sorted_rec[:10]:
-        with open('./data/results.csv') as csv_file:
-            data = csv.reader(csv_file, delimiter=',')
-
+    with open('./data/results.csv') as csv_file:
+        data = csv.reader(csv_file, delimiter=',')
+        for recommendation in sorted_rec[:10]:
             for row in data:
                 if row[0] == recommendation[0]:
                     rec_listings.append({
@@ -167,7 +166,7 @@ def recommendation():
                         "Bathrooms": row[2],
                         "Bedrooms": row[3],
                         "InteriorSize": row[4],
-                        "LowResPhoto": row[23],
+                        "LowResPhoto": row[24],
                         "Score": recommendation[1]
                     })
 
@@ -217,6 +216,29 @@ def deleteResults(name):
 @app.route('/login')
 def login():
     return render_template("public/login.html")
+
+@app.route('/results')
+def results():
+    #get recommendation listings from 3 sources
+
+    #get recommendation values
+    with open('./data/results.csv') as csv_file:
+        data = list(csv.reader(csv_file, delimiter=','))
+        results={'rec_a': [], 'rec_b': [], 'rec_c': [], 'rec_d': [], 'rec_e': []}
+        sources=['rec_a','rec_b','rec_c','rec_d','rec_e']
+        for source in sources:
+            for listing in data[:10]:
+                results[source].append({
+                            "MlsNumber": listing[0],
+                            "Price": listing[12],
+                            "Address": listing[7],
+                            "Bathrooms": listing[2],
+                            "Bedrooms": listing[3],
+                            "InteriorSize": listing[4],
+                            "LowResPhoto": listing[24]
+                })
+    return render_template("public/recommendations.html", data=results)
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=80)

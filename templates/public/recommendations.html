@@ -1,0 +1,128 @@
+
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>homesimple ui</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+
+
+
+      </head>
+      <body>
+        <button class="accordion">Recommendation 1</button>
+        <div class="panel">
+          <ul>
+        {% for listing in data['rec_a'] %}
+          <li>
+          <a href="page/{{ listing['MlsNumber'] }}">
+            <div class="listing row">
+                <div class="column">
+
+{#                <p>{{ listing['Score'] if listing['Score'] != ''}}</p>#}
+              <p>Price: {{listing['Price']}}</p>
+              <p>Address: {{listing['Address']}} </p>
+              <ul>
+                <li>Bathrooms: {{listing['Bathrooms']}}</li>
+                <li>Bedrooms: {{listing['Bedrooms']}}</li>
+              </ul>
+
+              <p>Viewed</p>
+              <p>Liked</p>
+                    </div>
+                <div class="column">
+                    <img src={{listing['LowResPhoto']}}>
+                </div>
+            </div>
+              </a>
+          </li>
+
+        {% endfor %}
+        </ul>
+        </div>
+
+        <button class="accordion">Recommendation 2</button>
+        <div class="panel">
+          <ul>
+        {% for listing in data['rec_b'] %}
+          <li>
+          <a href="page/{{ listing['MlsNumber'] }}">
+            <div class="listing row">
+                <div class="column">
+
+{#                <p>{{ listing['Score'] if listing['Score'] != ''}}</p>#}
+              <p>Price: {{listing['Price']}}</p>
+              <p>Address: {{listing['Address']}} </p>
+              <ul>
+                <li>Bathrooms: {{listing['Bathrooms']}}</li>
+                <li>Bedrooms: {{listing['Bedrooms']}}</li>
+              </ul>
+
+              <p>Viewed</p>
+              <p>Liked</p>
+                    </div>
+                <div class="column">
+                    <img src={{listing['LowResPhoto']}}>
+                </div>
+            </div>
+              </a>
+          </li>
+
+        {% endfor %}
+        </ul>
+        </div>
+
+        <button class="accordion">Recommendation 3</button>
+        <div class="panel">
+          <ul>
+        {% for listing in data['rec_c'] %}
+          <li>
+          <a href="page/{{ listing['MlsNumber'] }}">
+            <div class="listing row">
+                <div class="column">
+
+{#                <p>{{ listing['Score'] if listing['Score'] != ''}}</p>#}
+              <p>Price: {{listing['Price']}}</p>
+              <p>Address: {{listing['Address']}} </p>
+              <ul>
+                <li>Bathrooms: {{listing['Bathrooms']}}</li>
+                <li>Bedrooms: {{listing['Bedrooms']}}</li>
+              </ul>
+
+              <p>Viewed</p>
+              <p>Liked</p>
+                    </div>
+                <div class="column">
+                    <img src={{listing['LowResPhoto']}}>
+                </div>
+            </div>
+              </a>
+          </li>
+
+        {% endfor %}
+        </ul>
+        </div>
+
+          </body>
+        <script>
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+              acc[i].addEventListener("click", function() {
+                /* Toggle between adding and removing the "active" class,
+                to highlight the button that controls the panel */
+                this.classList.toggle("active");
+
+                /* Toggle between hiding and showing the active panel */
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                  panel.style.display = "none";
+                } else {
+                  panel.style.display = "block";
+                }
+              });
+            }
+        </script>
+    </html>
