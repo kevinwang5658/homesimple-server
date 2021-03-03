@@ -17,25 +17,24 @@ for number in listOfLikes:
 
 '''
 
-
-def image_search(listOfLikes):
+#Function helps determien the best house to represent listoflikes
+def average_image(listOfLikes):
     # Read image features
     fe = FeatureExtractor()
     features = []
-    img_paths = []
     relative_img_paths = []
     mlsNumbers = []
-    #/Users/PHOEN/PycharmProjects/homesimple-server/static/data/feature
-    for feature_path in Path("./static/data/feature").glob("*.npy"):
+    lowest_dist = []
+
+    # Limit features, mlsNumbers and relative img path to just list of likes
+    for mls_number in listOfLikes:
+        feature_path = Path("./static/data/feature/" + mls_number + "_1" + ".npy")
         print(feature_path)
         features.append(np.load(feature_path))
-        img_paths.append(
-            Path("./static/data/images") / (feature_path.stem + ".jpg"))
         relative_img_paths.append('./static/data/images/' + (feature_path.stem + ".jpg"))
         mlsNumbers.append(feature_path.stem[:-(len('_1'))])
 
     features = np.array(features)
-
     scriptDir = os.path.dirname(__file__)
     print(scriptDir)
 
@@ -51,16 +50,48 @@ def image_search(listOfLikes):
 
         query = fe.extract(img=Image.open(img_path))
         dists = np.linalg.norm(features - query, axis=1)  # L2 distances to features
-        return dict(zip(mlsNumbers, dists))
-    '''
-    return render_template('public/admin.html',
-                               render_images=True,
-                               query_path=img_path,
-                               scores=scores,
-                               render=False)
-        else:
-        return render_template('public/admin.html')
-    '''
+        id_wishlist = np.argsort(dists)[1:2]  # Top result from witihin listoflikes, exclusing itself
+        print(id_wishlist)
+        wishlist = [(dists[id]) for id in id_wishlist]
+        lowest_dist += wishlist
+
+    print(lowest_dist)
+    avg_dist_vector = np.argsort(lowest_dist)[:1]
+    print(avg_dist_vector)
+    wishlist_final = [(lowest_dist[id], relative_img_paths[id]) for id in avg_dist_vector]
+    print(wishlist_final)
+    # return dict(zip(mlsNumbers, avg_dist_vector))
+    # returns a single best representative house
+    return wishlist_final
+
+
+def image_search(listOfLikes):
+    #run image rec normally on best average house
+    ideal_image = average_image(listOfLikes)
+    img_path = ideal_image[0][1]
+
+    # Read image features
+    fe = FeatureExtractor()
+    features = []
+    img_paths = []
+    relative_img_paths = []
+    mlsNumbers = []
+    # /Users/PHOEN/PycharmProjects/homesimple-server/static/data/feature
+    for feature_path in Path("./static/data/feature").glob("*.npy"):
+        # print(feature_path)
+        features.append(np.load(feature_path))
+        img_paths.append(
+            Path("./static/data/images") / (feature_path.stem + ".jpg"))
+        relative_img_paths.append('./static/data/images/' + (feature_path.stem + ".jpg"))
+        mlsNumbers.append(feature_path.stem[:-(len('_1'))])
+
+    features = np.array(features)
+    query = fe.extract(img=Image.open(img_path))
+    dists = np.linalg.norm(features - query, axis=1)  # L2 distances to features
+    print('we did it')
+    print(dists)
+    print(mlsNumbers)
+    return dict(zip(mlsNumbers, dists))
 
 
 #image_search(listOfLikes)

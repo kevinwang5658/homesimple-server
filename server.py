@@ -18,7 +18,7 @@ resultsMap = {}
 
 @app.route('/')
 def get_root_dir():
-    return 'hello world'
+    return login()
 
 
 @app.route('/page')
@@ -192,6 +192,7 @@ def getName():
     ip_addr = request.remote_addr
     return ipToNameMap[ip_addr]
 
+<<<<<<< HEAD
 @app.route('/result/<name>', methods=['POST'])
 def setResults(name):
     resultsMap[name] = request.json['data']
@@ -209,6 +210,9 @@ def deleteResults(name):
     return "success"
 
 
+@app.route('/login')
+def login():
+    return render_template("public/login.html")
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=80)
