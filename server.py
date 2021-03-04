@@ -210,6 +210,7 @@ def getResults(name):
 
 @app.route('/result/<name>', methods=['DELETE'])
 def deleteResults(name):
+    name = name.lower()
     del resultsMap[name]
 
     return "success"
@@ -221,6 +222,7 @@ def login():
 
 @app.route('/results/<name>')
 def results(name):
+    name=name.lower()
     #get recommendation listings from 3 sources
     response = requests.get('http://'+request.headers.get('Host')+'/result/'+name)
     response = response.json()
