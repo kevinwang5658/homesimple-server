@@ -186,7 +186,7 @@ def recommendation():
 @app.route('/name', methods=['POST'])
 def setName():
     ip_addr = request.remote_addr
-    ipToNameMap[ip_addr] = request.json['name']
+    ipToNameMap[ip_addr] = request.json['name'].lower()
 
     return "success"
 
