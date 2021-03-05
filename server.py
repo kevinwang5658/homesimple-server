@@ -111,6 +111,18 @@ def search():
 def likes():
     return json.dumps(likesMap)
 
+@app.route('/like/<name>', methods=['GET'])
+def like_by_name(name):
+    name=name.lower()
+    adr = ''
+    likes_data = requests.get('http://'+request.headers.get('Host')+'/name').json()
+    print(likes_data)
+    for ip in likes_data:
+        print(ip, likes_data[ip])
+        if likes_data[ip] == name:
+            adr = ip
+    print(adr)
+    return json.dumps(likesMap[adr])
 
 @app.route('/like/<mls_number>', methods=['POST'])
 def addLike(mls_number):
@@ -158,7 +170,7 @@ def recommendation():
     #only show first 10 items
     with open('./data/results.csv') as csv_file:
         data = list(csv.reader(csv_file, delimiter=','))
-        for recommendation in sorted_rec[:10]:
+        for recommendation in sorted_rec[:4]:
             for row in data:
                 if row[0] == recommendation[0]:
                     rec_listings.append({
@@ -193,10 +205,11 @@ def setName():
 @app.route('/name', methods=['GET'])
 def getName():
     ip_addr = request.remote_addr
-    return ipToNameMap[ip_addr]
+    return ipToNameMap
 
 @app.route('/result/<name>/<realtor>', methods=['POST'])
 def setResults(name, realtor):
+    name=name.lower()
     if (name not in resultsMap):
         resultsMap[name] = {}
 
@@ -223,20 +236,35 @@ def login():
 @app.route('/results/<name>')
 def results(name):
     name=name.lower()
-    #get recommendation listings from 3 sources
-    response = requests.get('http://'+request.headers.get('Host')+'/result/'+name)
-    response = response.json()
+    #get likes list
+    user_likes = requests.get('http://'+request.headers.get('Host')+'/like/'+name).json()
+    print(user_likes)
+
+    #get recommendation listings from other sources
+    response = requests.get('http://'+request.headers.get('Host')+'/result/'+name).json()
     print(response)
     #get recommendation values
     with open('./data/results.csv') as csv_file:
         data = list(csv.reader(csv_file, delimiter=','))
-        results={'realtorA': [], 'realtorB': [], 'realtorC': [], 'realtorD': [], 'realtorE': []}
+        results={'Your Likes':[], 'realtorA': [], 'realtorB': [], 'realtorC': [], 'realtorD': [], 'realtorE': []}
         sources=['realtorA','realtorB','realtorC','realtorD','realtorE']
+        for liked_mls in user_likes:
+            for listing in data:
+                if listing[0] == liked_mls:
+                    results['Your Likes'].append({
+                        "MlsNumber": listing[0],
+                        "Price": listing[12],
+                        "Address": listing[7],
+                        "Bathrooms": listing[2],
+                        "Bedrooms": listing[3],
+                        "InteriorSize": listing[4],
+                        "LowResPhoto": listing[24]
+                    })
         for source in sources:
             if source in response[name]:
-                for liked_mls in response[name][source]:
+                for rec_mls in response[name][source]:
                     for listing in data:
-                        if listing[0] == liked_mls:
+                        if listing[0] == rec_mls:
                             results[source].append({
                                         "MlsNumber": listing[0],
                                         "Price": listing[12],

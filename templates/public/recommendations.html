@@ -10,10 +10,12 @@
 
       </head>
       <body>
-        <button class="accordion">Realtor A</button>
+      {% for key in data %}
+
+        <button class="accordion">{{ key }}</button>
         <div class="panel">
           <ul>
-        {% for listing in data['realtorA'] %}
+{% for listing in data[key] %}
           <li>
           <a href="/page/{{ listing['MlsNumber'] }}">
             <div class="listing row">
@@ -36,132 +38,160 @@
             </div>
               </a>
           </li>
-
-        {% endfor %}
-        </ul>
+    {% endfor %}
+                          </ul>
         </div>
 
-        <button class="accordion">Realtor B</button>
-        <div class="panel">
-          <ul>
-        {% for listing in data['realtorB'] %}
-          <li>
-          <a href="/page/{{ listing['MlsNumber'] }}">
-            <div class="listing row">
-                <div class="column">
-
+        {% endfor %}
+{#        {% for listing in data['realtorA'] %}#}
+{#          <li>#}
+{#          <a href="/page/{{ listing['MlsNumber'] }}">#}
+{#            <div class="listing row">#}
+{#                <div class="column">#}
+{##}
 {#                <p>{{ listing['Score'] if listing['Score'] != ''}}</p>#}
-              <p>Price: {{listing['Price']}}</p>
-              <p>Address: {{listing['Address']}} </p>
-              <ul>
-                <li>Bathrooms: {{listing['Bathrooms']}}</li>
-                <li>Bedrooms: {{listing['Bedrooms']}}</li>
-              </ul>
-
-              <p>Viewed</p>
-              <p>Liked</p>
-                    </div>
-                <div class="column">
-                    <img src={{listing['LowResPhoto']}}>
-                </div>
-            </div>
-              </a>
-          </li>
-
-        {% endfor %}
-        </ul>
-        </div>
-
-        <button class="accordion">Realtor C</button>
-        <div class="panel">
-          <ul>
-        {% for listing in data['realtorC'] %}
-          <li>
-          <a href="/page/{{ listing['MlsNumber'] }}">
-            <div class="listing row">
-                <div class="column">
-
+{#              <p>Price: {{listing['Price']}}</p>#}
+{#              <p>Address: {{listing['Address']}} </p>#}
+{#              <ul>#}
+{#                <li>Bathrooms: {{listing['Bathrooms']}}</li>#}
+{#                <li>Bedrooms: {{listing['Bedrooms']}}</li>#}
+{#              </ul>#}
+{##}
+{#              <p>Viewed</p>#}
+{#              <p>Liked</p>#}
+{#                    </div>#}
+{#                <div class="column">#}
+{#                    <img src={{listing['LowResPhoto']}}>#}
+{#                </div>#}
+{#            </div>#}
+{#              </a>#}
+{#          </li>#}
+{##}
+{#        {% endfor %}#}
+{#        </ul>#}
+{#        </div>#}
+{##}
+{#        <button class="accordion">Realtor B</button>#}
+{#        <div class="panel">#}
+{#          <ul>#}
+{#        {% for listing in data['realtorB'] %}#}
+{#          <li>#}
+{#          <a href="/page/{{ listing['MlsNumber'] }}">#}
+{#            <div class="listing row">#}
+{#                <div class="column">#}
+{##}
 {#                <p>{{ listing['Score'] if listing['Score'] != ''}}</p>#}
-              <p>Price: {{listing['Price']}}</p>
-              <p>Address: {{listing['Address']}} </p>
-              <ul>
-                <li>Bathrooms: {{listing['Bathrooms']}}</li>
-                <li>Bedrooms: {{listing['Bedrooms']}}</li>
-              </ul>
-
-              <p>Viewed</p>
-              <p>Liked</p>
-                    </div>
-                <div class="column">
-                    <img src={{listing['LowResPhoto']}}>
-                </div>
-            </div>
-              </a>
-          </li>
-
-        {% endfor %}
-        </ul>
-        </div>
-        <button class="accordion">Realtor D</button>
-        <div class="panel">
-          <ul>
-        {% for listing in data['realtorD'] %}
-          <li>
-          <a href="/page/{{ listing['MlsNumber'] }}">
-            <div class="listing row">
-                <div class="column">
-
+{#              <p>Price: {{listing['Price']}}</p>#}
+{#              <p>Address: {{listing['Address']}} </p>#}
+{#              <ul>#}
+{#                <li>Bathrooms: {{listing['Bathrooms']}}</li>#}
+{#                <li>Bedrooms: {{listing['Bedrooms']}}</li>#}
+{#              </ul>#}
+{##}
+{#              <p>Viewed</p>#}
+{#              <p>Liked</p>#}
+{#                    </div>#}
+{#                <div class="column">#}
+{#                    <img src={{listing['LowResPhoto']}}>#}
+{#                </div>#}
+{#            </div>#}
+{#              </a>#}
+{#          </li>#}
+{##}
+{#        {% endfor %}#}
+{#        </ul>#}
+{#        </div>#}
+{##}
+{#        <button class="accordion">Realtor C</button>#}
+{#        <div class="panel">#}
+{#          <ul>#}
+{#          #}
+{#        {% for listing in data['realtorC'] %}#}
+{#          <li>#}
+{#          <a href="/page/{{ listing['MlsNumber'] }}">#}
+{#            <div class="listing row">#}
+{#                <div class="column">#}
+{##}
 {#                <p>{{ listing['Score'] if listing['Score'] != ''}}</p>#}
-              <p>Price: {{listing['Price']}}</p>
-              <p>Address: {{listing['Address']}} </p>
-              <ul>
-                <li>Bathrooms: {{listing['Bathrooms']}}</li>
-                <li>Bedrooms: {{listing['Bedrooms']}}</li>
-              </ul>
-
-              <p>Viewed</p>
-              <p>Liked</p>
-                    </div>
-                <div class="column">
-                    <img src={{listing['LowResPhoto']}}>
-                </div>
-            </div>
-              </a>
-          </li>
-
-        {% endfor %}
-        </ul>
-        </div>
-      <button class="accordion">Realtor E</button>
-        <div class="panel">
-          <ul>
-        {% for listing in data['realtorE'] %}
-          <li>
-          <a href="/page/{{ listing['MlsNumber'] }}">
-            <div class="listing row">
-                <div class="column">
-
+{#              <p>Price: {{listing['Price']}}</p>#}
+{#              <p>Address: {{listing['Address']}} </p>#}
+{#              <ul>#}
+{#                <li>Bathrooms: {{listing['Bathrooms']}}</li>#}
+{#                <li>Bedrooms: {{listing['Bedrooms']}}</li>#}
+{#              </ul>#}
+{##}
+{#              <p>Viewed</p>#}
+{#              <p>Liked</p>#}
+{#                    </div>#}
+{#                <div class="column">#}
+{#                    <img src={{listing['LowResPhoto']}}>#}
+{#                </div>#}
+{#            </div>#}
+{#              </a>#}
+{#          </li>#}
+{##}
+{#        {% endfor %}#}
+{#        </ul>#}
+{#        </div>#}
+{#        <button class="accordion">Realtor D</button>#}
+{#        <div class="panel">#}
+{#          <ul>#}
+{#        {% for listing in data['realtorD'] %}#}
+{#          <li>#}
+{#          <a href="/page/{{ listing['MlsNumber'] }}">#}
+{#            <div class="listing row">#}
+{#                <div class="column">#}
+{##}
 {#                <p>{{ listing['Score'] if listing['Score'] != ''}}</p>#}
-              <p>Price: {{listing['Price']}}</p>
-              <p>Address: {{listing['Address']}} </p>
-              <ul>
-                <li>Bathrooms: {{listing['Bathrooms']}}</li>
-                <li>Bedrooms: {{listing['Bedrooms']}}</li>
-              </ul>
+{#              <p>Price: {{listing['Price']}}</p>#}
+{#              <p>Address: {{listing['Address']}} </p>#}
+{#              <ul>#}
+{#                <li>Bathrooms: {{listing['Bathrooms']}}</li>#}
+{#                <li>Bedrooms: {{listing['Bedrooms']}}</li>#}
+{#              </ul>#}
+{##}
+{#              <p>Viewed</p>#}
+{#              <p>Liked</p>#}
+{#                    </div>#}
+{#                <div class="column">#}
+{#                    <img src={{listing['LowResPhoto']}}>#}
+{#                </div>#}
+{#            </div>#}
+{#              </a>#}
+{#          </li>#}
+{##}
+{#        {% endfor %}#}
+{#        </ul>#}
+{#        </div>#}
+{#      <button class="accordion">Realtor E</button>#}
+{#        <div class="panel">#}
+{#          <ul>#}
+{#        {% for listing in data['realtorE'] %}#}
+{#          <li>#}
+{#          <a href="/page/{{ listing['MlsNumber'] }}">#}
+{#            <div class="listing row">#}
+{#                <div class="column">#}
+{##}
+{#                <p>{{ listing['Score'] if listing['Score'] != ''}}</p>#}
+{#              <p>Price: {{listing['Price']}}</p>#}
+{#              <p>Address: {{listing['Address']}} </p>#}
+{#              <ul>#}
+{#                <li>Bathrooms: {{listing['Bathrooms']}}</li>#}
+{#                <li>Bedrooms: {{listing['Bedrooms']}}</li>#}
+{#              </ul>#}
+{##}
+{#              <p>Viewed</p>#}
+{#              <p>Liked</p>#}
+{#                    </div>#}
+{#                <div class="column">#}
+{#                    <img src={{listing['LowResPhoto']}}>#}
+{#                </div>#}
+{#            </div>#}
+{#              </a>#}
+{#          </li>#}
+{##}
+{#        {% endfor %}#}
 
-              <p>Viewed</p>
-              <p>Liked</p>
-                    </div>
-                <div class="column">
-                    <img src={{listing['LowResPhoto']}}>
-                </div>
-            </div>
-              </a>
-          </li>
-
-        {% endfor %}
-        </ul>
-        </div>
 
           </body>
         <script>
