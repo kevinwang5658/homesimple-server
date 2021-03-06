@@ -28,7 +28,7 @@ def average_image(listOfLikes):
 
     # Limit features, mlsNumbers and relative img path to just list of likes
     for mls_number in listOfLikes:
-        feature_path = Path("./static/data/feature/" + mls_number + "_1" + ".npy")
+        feature_path = Path("./static/data/feature/" + mls_number.lower() + "_1" + ".npy")
         print(feature_path)
         features.append(np.load(feature_path))
         relative_img_paths.append('./static/data/images/' + (feature_path.stem + ".jpg"))
@@ -40,7 +40,7 @@ def average_image(listOfLikes):
 
     for mls_number in listOfLikes:
         # img_path = Path(("./data/images/" + mls_number + '_1' + '.jpg'))
-        img_path = os.path.join(scriptDir, './static/data/images/' + mls_number + '_1' + '.jpg')
+        img_path = os.path.join(scriptDir, './static/data/images/' + mls_number.lower() + '_1' + '.jpg')
         print(img_path)  # e.g., ./data/images/xxx.jpg
 
         # feature = fe.extract(img=Image.open(img_path))  # extracts features from that image path
