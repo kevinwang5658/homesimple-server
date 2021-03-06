@@ -142,8 +142,13 @@ def recommendation():
     # Put recommendation code here
     # Use listOfLikes to get what the user likes
     img_rec = image_search(listOfLikes)
+
+    key_min = min(img_rec.keys(), key=(lambda k: img_rec[k]))
+    lowest_value = img_rec[key_min]
+    print('min score', lowest_value)
+
     #combine both dicts by mlsnumber
-    combined = {k: text_rec.get(k, 0) + 0.75 * img_rec.get(k, 0) for k in set(text_rec) | set(img_rec)}
+    combined = {k: text_rec.get(k, 0) + 2 * (1/img_rec.get(k, 0))*(1/lowest_value) for k in set(text_rec) | set(img_rec)}
     #sort ascending
     sorted_rec = [[k, combined[k]] for k in sorted(combined, key=combined.get, reverse=False)]
     print(sorted_rec)
