@@ -10,13 +10,36 @@ from suggestion import image_search
 
 # sys.path.append('TF-IDF')
 import tf_idf
-
+import data_fetcher
 import requests
+
 
 app = Flask(__name__, static_url_path='/static')
 likesMap = {}
 ipToNameMap = {}
 resultsMap = {}
+
+BARRIE_PARAMS  = {
+    'CultureId': 1,
+    'ApplicationId': 1,
+    'PropertySearchTypeId': 1,
+    'HashCode': 0,
+    'ZoomLevel': 12,
+    'LatitudeMax': 44.45603,
+    'LongitudeMax': -79.50423,
+    'LatitudeMin': 44.26457,
+    'LongitudeMin': -79.82730,
+    'PriceMin': 400000,
+    'PriceMax': 650000,
+    'Sort': "6-D",
+    'PropertyTypeGroupID': 1,
+    'TransactionTypeId': 2,
+    'BedRange': "2-0",
+    'BathRange': "1-0",
+    'BuildingTypeId': 1,
+}
+
+data_fetcher.fetch(BARRIE_PARAMS, 'kevin')
 
 @app.route('/')
 def get_root_dir():
