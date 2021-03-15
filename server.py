@@ -159,7 +159,7 @@ def recommendation():
     key_max = max(img_rec.keys(), key=(lambda k: img_rec[k]))
     print(key_max)
     print(img_rec[key_max])
-    combined = {k: text_rec.get(k, 0) + 2 *(-1)* ((img_rec.get(k, 0)/img_rec[key_max])-1) for k in set(text_rec) | set(img_rec)}
+    combined = {k: text_rec.get(k, 0) + 2 *(-1)* ((img_rec.get(k, 0)/img_rec[key_max])-2) for k in set(text_rec) | set(img_rec)}
     #sort ascending
     sorted_rec = [[k, combined[k]] for k in sorted(combined, key=combined.get, reverse=True)]
     print('sorted rec', sorted_rec)
