@@ -149,23 +149,20 @@ def recommendation():
     # print(likesMap)
     listOfLikes = likesMap[request.json['ipAddress']]
     # print(listOfLikes)
-    #get list of all tfidf scores
+    #get list of all tfidf scores - the GREATER the better (0,1)
     text_rec = tf_idf.recommend(listOfLikes, 5)
     print('tf-idf scores:', text_rec)
 
-    # Put recommendation code here
-    # Use listOfLikes to get what the user likes
+    #get image recommendations - the SMALLER the better (0, 2?)
     img_rec = image_search(listOfLikes)
 
-    key_min = min(img_rec.keys(), key=(lambda k: img_rec[k]))
-    lowest_value = img_rec[key_min]
-    print('min score', lowest_value)
-
-    #combine both dicts by mlsnumber
-    combined = {k: text_rec.get(k, 0) + 2 * (1/img_rec.get(k, 0))*(1/lowest_value) for k in set(text_rec) | set(img_rec)}
+    key_max = max(img_rec.keys(), key=(lambda k: img_rec[k]))
+    print(key_max)
+    print(img_rec[key_max])
+    combined = {k: text_rec.get(k, 0) + 2 *(-1)* ((img_rec.get(k, 0)/img_rec[key_max])-1) for k in set(text_rec) | set(img_rec)}
     #sort ascending
-    sorted_rec = [[k, combined[k]] for k in sorted(combined, key=combined.get, reverse=False)]
-    print(sorted_rec)
+    sorted_rec = [[k, combined[k]] for k in sorted(combined, key=combined.get, reverse=True)]
+    print('sorted rec', sorted_rec)
     # return render_template('public/admin.html',
     #                        render_images=True,
     #                        query_path=image_path,
@@ -175,7 +172,7 @@ def recommendation():
     #only show first 10 items
     with open('./data/results.csv') as csv_file:
         data = list(csv.reader(csv_file, delimiter=','))
-        for recommendation in sorted_rec[:4]:
+        for recommendation in sorted_rec[:3]:
             for row in data:
                 if row[0] == recommendation[0]:
                     rec_listings.append({
@@ -188,7 +185,7 @@ def recommendation():
                         "LowResPhoto": row[24],
                         "Score": recommendation[1]
                     })
-
+    print('recommended listings',rec_listings)
     if (request.json['ipAddress'] in ipToNameMap):
         name = ipToNameMap[request.json['ipAddress']]
         if (name not in resultsMap):
