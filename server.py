@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, Response
 import json
 import csv
 import os
+from flask_cors import CORS
 
 import sys
 
@@ -10,13 +11,36 @@ from suggestion import image_search
 
 # sys.path.append('TF-IDF')
 import tf_idf
-
+import data_fetcher
 import requests
 
+
 app = Flask(__name__, static_url_path='/static')
+CORS(app)
+
 likesMap = {}
 ipToNameMap = {}
 resultsMap = {}
+
+BARRIE_PARAMS  = {
+    'CultureId': 1,
+    'ApplicationId': 1,
+    'PropertySearchTypeId': 1,
+    'HashCode': 0,
+    'ZoomLevel': 12,
+    'LatitudeMax': 44.45603,
+    'LongitudeMax': -79.50423,
+    'LatitudeMin': 44.26457,
+    'LongitudeMin': -79.82730,
+    'PriceMin': 400000,
+    'PriceMax': 650000,
+    'Sort': "6-D",
+    'PropertyTypeGroupID': 1,
+    'TransactionTypeId': 2,
+    'BedRange': "2-0",
+    'BathRange': "1-0",
+    'BuildingTypeId': 1,
+}
 
 @app.route('/')
 def get_root_dir():
@@ -104,7 +128,8 @@ def search():
                 })
             else:
                 first_line = False
-    return render_template("public/results.html", data=places)
+
+    return json.dumps(places)
 
 
 @app.route('/like', methods=['GET'])
