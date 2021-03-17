@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, Response
 import json
 import csv
 import os
+from flask_cors import CORS
 
 import sys
 
@@ -15,6 +16,8 @@ import requests
 
 
 app = Flask(__name__, static_url_path='/static')
+CORS(app)
+
 likesMap = {}
 ipToNameMap = {}
 resultsMap = {}
@@ -38,8 +41,6 @@ BARRIE_PARAMS  = {
     'BathRange': "1-0",
     'BuildingTypeId': 1,
 }
-
-data_fetcher.fetch(BARRIE_PARAMS, 'kevin')
 
 @app.route('/')
 def get_root_dir():
@@ -127,7 +128,8 @@ def search():
                 })
             else:
                 first_line = False
-    return render_template("public/results.html", data=places)
+
+    return json.dumps(places)
 
 
 @app.route('/like', methods=['GET'])
