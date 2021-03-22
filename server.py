@@ -105,7 +105,7 @@ def page_id(MlsNumber):
 
                     "LowResPhoto": row[24]
                 }
-    return json.dumps(places)
+    return render_template("public/listing.html", data=places)
 
 
 @app.route('/search')
@@ -129,7 +129,7 @@ def search():
             else:
                 first_line = False
 
-    return json.dumps(places)
+    return render_template("public/results.html", data=places)
 
 
 @app.route('/like', methods=['GET'])
@@ -307,4 +307,4 @@ def results(name):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=80, ssl_context=context)
