@@ -10,7 +10,7 @@ from sklearn.metrics.pairwise import linear_kernel
 # plt.axis('off')
 # plt.show()
 
-listings = pd.read_csv('./data/results.csv', usecols=['MlsNumber', 'PublicRemarks', 'Type', 'Ammenities'])
+listings = pd.read_csv('./data/natalie.csv', usecols=['MlsNumber', 'PublicRemarks', 'Type', 'Ammenities'])
 
 def item(listings, id):
     name = listings.loc[listings['MlsNumber'] == id]['content'].tolist()[0].split(' // ')[0]
