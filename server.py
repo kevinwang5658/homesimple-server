@@ -231,7 +231,7 @@ def recommendation():
     key_max = max(img_rec.keys(), key=(lambda k: img_rec[k]))
     print(key_max)
     print(img_rec[key_max])
-    combined = {k: text_rec.get(k, 0) + 2 *(-1)* ((img_rec.get(k, 0)/img_rec[key_max])-2) for k in set(text_rec) | set(img_rec)}
+    combined = {k: text_rec.get(k, 0) + (-1) * ((img_rec.get(k, 0)/img_rec[key_max])-2) for k in set(text_rec) | set(img_rec)}
     #sort ascending
     sorted_rec = [[k, combined[k]] for k in sorted(combined, key=combined.get, reverse=True)]
     print('sorted rec', sorted_rec)
@@ -242,10 +242,11 @@ def recommendation():
     #                        render=False)
     rec_listings=[]
     #only show first 10 items
-    with open('./data/results.csv') as csv_file:
+    with open('./data/natalie.csv') as csv_file:
         data = list(csv.reader(csv_file, delimiter=','))
         for recommendation in sorted_rec[:3]:
             for row in data:
+                print(row[0].lower(),recommendation[0])
                 if row[0] == recommendation[0]:
                     rec_listings.append({
                         "MlsNumber": row[0],
@@ -318,7 +319,7 @@ def results(name):
     response = requests.get('http://'+request.headers.get('Host')+'/result/'+name).json()
     print(response)
     #get recommendation values
-    with open('./data/results.csv') as csv_file:
+    with open('./data/natalie.csv') as csv_file:
         data = list(csv.reader(csv_file, delimiter=','))
         results={'Your Likes':[], 'realtorA': [], 'realtorB': [], 'realtorC': [], 'realtorD': [], 'realtorE': []}
         sources=['realtorA','realtorB','realtorC','realtorD','realtorE']
