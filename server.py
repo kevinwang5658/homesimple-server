@@ -131,6 +131,30 @@ def search():
 
     return render_template("public/results.html", data=places)
 
+@app.route('/list')
+def list():
+    places = []
+    with open('./data/results.csv') as csv_file:
+        data = csv.reader(csv_file, delimiter=',')
+        first_line = True
+
+        for row in data:
+            if not first_line:
+                places.append({
+                    "MlsNumber": row[0],
+                    "Price": row[12],
+                    "Address": row[7],
+                    "Bathrooms": row[2],
+                    "Bedrooms": row[3],
+                    "InteriorSize": row[4],
+                    "LowResPhoto": row[24]
+                })
+            else:
+                first_line = False
+
+    return json.dumps(places)
+
+
 @app.route('/search/<name>')
 def searchWithName(name):
     places = []
