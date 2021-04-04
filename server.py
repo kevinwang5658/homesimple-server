@@ -157,8 +157,6 @@ def page_external(MlsNumber):
                 }
     return json.dumps(places)
 
-
-
 @app.route('/search')
 def search():
     places = []
