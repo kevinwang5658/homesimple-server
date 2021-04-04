@@ -155,7 +155,7 @@ def page_external(MlsNumber):
 
                     "LowResPhoto": row[24]
                 }
-    return render_template("public/listing.html", data=places)
+    return json.dumps(places)
 
 
 
