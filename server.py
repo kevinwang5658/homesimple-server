@@ -132,6 +132,31 @@ def page(MlsNumber):
                 }
     return render_template("public/listing.html", data=places)
 
+@app.route('/page/external/<MlsNumber>')
+def page_external(MlsNumber):
+    places = {}
+    with open('./data/results.csv') as csv_file:
+        data = csv.reader(csv_file, delimiter=',')
+
+        for row in data:
+            if row[0] == MlsNumber:
+                places = {
+                    "MlsNumber": row[0],
+                    "PublicRemarks": row[1],
+                    "Bathrooms": row[2],
+                    "Bedrooms": row[3],
+                    "InteriorSize": row[4],
+                    "Ammenities": row[6],
+
+                    "Address": row[7],
+                    "Longitude": row[8],
+                    "Latitude": row[9],
+                    "Price": row[12],
+
+                    "LowResPhoto": row[24]
+                }
+    return render_template("public/listing.html", data=places)
+
 
 
 @app.route('/search')
