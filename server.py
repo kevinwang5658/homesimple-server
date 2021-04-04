@@ -47,39 +47,39 @@ def get_root_dir():
     return login()
 
 
-@app.route('/page')
-def page():
-    listing_info = '''
-    {
-  "MlsNumber": "X5095381",
-  "PublicRemarks": "Location Location Location !!! Bright Well Maintained One Of Detached Home Back To Trail !!! Newly Wood Floor Throughout, Lots Of Windows, New Paint, Quiet Neighbourhood, Mins To Local Restaurants, Mall, Supermarkets, Schools &Shops. Walk Distense To University Of Waterloo, Used To Be Licensed Student Rental.And Own Use. Buy To Invest Or Own Use. Recent Improvements!!! Can't Miss This.**** EXTRAS **** Stove, Dishwasher, Washer, Dryer, All Elf's, All Window Coverings And Cac. (27853962)",
-  "Bathrooms": 3,
-  "Bedrooms": "4 + 1",
-  "InteriorSize": "",
-  "Type": "House",
-  "Ammenities": "",
-  "Address": "74 KAREN WALK|Waterloo, Ontario N2L6K7",
-  "Longitude": -80.5463426,
-  "Latitude": 43.4591645,
-  "PostalCode": "N2L6K7",
-  "NeighbourHood": "",
-  "Price": "$550,000",
-  "PropertyType": "Single Family",
-  "ParkingSpace": 3,
-  "OwnershipType": "Freehold",
-  "Appliances": "",
-  "FlooringType": "",
-  "BasementType": "N/A (Finished)",
-  "HeatingType": "Forced air (Natural gas)",
-  "LandSize": "39.37 x 124.12 FT",
-  "AmmenitiesNearBy": "",
-  "PropertyTax": "$3,547.12",
-  "ZoningDescription": "",
-  "LowResPhoto": ""
-}
-
-    '''
-    return render_template("public/listing.html", data=json.loads(listing_info))
+# @app.route('/page')
+# def page():
+#     listing_info = '''
+#     {
+#   "MlsNumber": "X5095381",
+#   "PublicRemarks": "Location Location Location !!! Bright Well Maintained One Of Detached Home Back To Trail !!! Newly Wood Floor Throughout, Lots Of Windows, New Paint, Quiet Neighbourhood, Mins To Local Restaurants, Mall, Supermarkets, Schools &Shops. Walk Distense To University Of Waterloo, Used To Be Licensed Student Rental.And Own Use. Buy To Invest Or Own Use. Recent Improvements!!! Can't Miss This.**** EXTRAS **** Stove, Dishwasher, Washer, Dryer, All Elf's, All Window Coverings And Cac. (27853962)",
+#   "Bathrooms": 3,
+#   "Bedrooms": "4 + 1",
+#   "InteriorSize": "",
+#   "Type": "House",
+#   "Ammenities": "",
+#   "Address": "74 KAREN WALK|Waterloo, Ontario N2L6K7",
+#   "Longitude": -80.5463426,
+#   "Latitude": 43.4591645,
+#   "PostalCode": "N2L6K7",
+#   "NeighbourHood": "",
+#   "Price": "$550,000",
+#   "PropertyType": "Single Family",
+#   "ParkingSpace": 3,
+#   "OwnershipType": "Freehold",
+#   "Appliances": "",
+#   "FlooringType": "",
+#   "BasementType": "N/A (Finished)",
+#   "HeatingType": "Forced air (Natural gas)",
+#   "LandSize": "39.37 x 124.12 FT",
+#   "AmmenitiesNearBy": "",
+#   "PropertyTax": "$3,547.12",
+#   "ZoningDescription": "",
+#   "LowResPhoto": ""
+# }
+#
+#     '''
+#     return render_template("public/listing.html", data=json.loads(listing_info))
 
 
 @app.route('/page/<name>/<MlsNumber>')
@@ -106,6 +106,32 @@ def page_id(name, MlsNumber):
                     "LowResPhoto": row[24]
                 }
     return render_template("public/listing.html", data=places)
+
+@app.route('/page/<MlsNumber>')
+def page(MlsNumber):
+    places = {}
+    with open('./data/results.csv') as csv_file:
+        data = csv.reader(csv_file, delimiter=',')
+
+        for row in data:
+            if row[0] == MlsNumber:
+                places = {
+                    "MlsNumber": row[0],
+                    "PublicRemarks": row[1],
+                    "Bathrooms": row[2],
+                    "Bedrooms": row[3],
+                    "InteriorSize": row[4],
+                    "Ammenities": row[6],
+
+                    "Address": row[7],
+                    "Longitude": row[8],
+                    "Latitude": row[9],
+                    "Price": row[12],
+
+                    "LowResPhoto": row[24]
+                }
+    return render_template("public/listing.html", data=places)
+
 
 
 @app.route('/search')
