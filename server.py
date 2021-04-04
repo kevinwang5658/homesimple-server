@@ -291,7 +291,7 @@ def recommendation():
     #                        render=False)
     rec_listings=[]
     #only show first 10 items
-    with open('./data/natalie.csv') as csv_file:
+    with open('./data/results.csv') as csv_file:
         data = list(csv.reader(csv_file, delimiter=','))
         for recommendation in sorted_rec[:3]:
             for row in data:
